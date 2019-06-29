@@ -1,13 +1,13 @@
 const express = require('express');
 
-const Game = require('../games/gamesModel.js');
+const Games = require('../games/gamesModel.js');
 
 const server = express();
 
 server.use(express.json());
 
 server.get('/games', (req, res) => {
-  Game.getAll()
+  Games.getAll()
     .then(games => {
       res.status(200).json(games);
     })
@@ -24,7 +24,7 @@ server.post('/games', async (req, res) => {
   }
 
   try {
-    const game = await Game.insert(req.body);
+    const game = await Games.insert(req.body);
     res.status(201).json(game);
   } catch (error) {
     // log error to server
@@ -37,7 +37,7 @@ server.post('/games', async (req, res) => {
 
 server.get('/games/:id', async (req, res) => {
   try {
-    const game = await Game.findById(req.params.id);    
+    const game = await Games.findById(req.params.id);    
 
     if (game) {
       res.status(200).json(game);
