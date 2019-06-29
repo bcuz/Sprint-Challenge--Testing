@@ -22,12 +22,6 @@ async function insert(game) {
 
 }
 
-// function remove(id) {
-//   return db('users')
-//     .where({ id })
-//     .del();
-// }
-
 function findById(id) {
   return db('games')
     .where({ id })

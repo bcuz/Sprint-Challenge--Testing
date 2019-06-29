@@ -2,7 +2,7 @@ const request = require('supertest'); // calling it "request" is a common practi
 
 const server = require('./server.js'); // this is our first red, file doesn't exist yet
 const db = require('../data/dbConfig.js');
-const Games = require('../games/gamesModel.js');
+const Game = require('../games/gamesModel.js');
 
 describe('server.js', () => {
   it('should be using test env', () => {
