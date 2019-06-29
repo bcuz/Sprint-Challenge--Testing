@@ -10,6 +10,10 @@ describe('server.js', () => {
   })
 
   describe('get /games', () => {
+    afterEach( async () => {
+      await db('games').truncate();
+    });
+
     it('should return an OK status code for the /games route', async () => {
       const expectedStatusCode = 200;
 
@@ -25,6 +29,22 @@ describe('server.js', () => {
       const response = await request(server).get('/games');
 
       expect(response.body).toEqual([]);
+    }); 
+
+    it('should return all games in db', async () => {
+      const games = [
+         { 
+           "id": 1,
+          "title": "Shovel Knight", 
+          "genre": "Action", 
+          "releaseYear": 2014 
+        }
+      ];
+
+      await db('games').insert(games);
+
+      const res = await request(server).get('/games');
+      expect(res.body).toEqual(games);
     }); 
 
     it('should return a JSON object from the route', async () => {
