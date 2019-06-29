@@ -16,4 +16,23 @@ server.get('/games', (req, res) => {
     });
 });
 
+server.post('/games', async (req, res) => {
+  let game = req.body;
+
+  if (!game.title || !game.genre) {
+    return res.status(422).json({ message: 'Need title and genre' });
+  }
+
+  try {
+    const game = await Games.insert(req.body);
+    res.status(201).json(game);
+  } catch (error) {
+    // log error to server
+    console.log(error);
+    res.status(500).json({
+      message: 'Error adding the game',
+    });
+  }
+})
+
 module.exports = server;

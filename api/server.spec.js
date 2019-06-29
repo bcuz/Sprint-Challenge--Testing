@@ -34,4 +34,53 @@ describe('server.js', () => {
     });
 
   })
+
+  describe('post /games', () => {
+    afterEach( async () => {
+      await db('games').truncate();
+    });
+
+    it('should return Unprocessable Entity status code for bad post to /games route', async () => {
+      const expectedStatusCode = 422;
+      let body = { 
+        "title": "Shovel Knight", 
+        "releaseYear": 2014 
+      }
+
+      // do a get request to our api (server.js) and inspect the response
+      const response = await request(server).post('/games').send(body);
+
+      expect(response.status).toEqual(expectedStatusCode);
+
+    });
+    
+    it('should return a created status code for the /games route', async () => {
+      const expectedStatusCode = 201;
+      let body = { 
+        "title": "Shovel Knight", 
+        "genre": "Action", 
+        "releaseYear": 2014 
+      }
+
+      // do a get request to our api (server.js) and inspect the response
+      const response = await request(server).post('/games').send(body);
+
+      expect(response.status).toEqual(expectedStatusCode);
+
+    });
+
+    it('should return a JSON object from the route', async () => {
+      let body = { 
+        "title": "Shovel Knight", 
+        "genre": "Action", 
+        "releaseYear": 2014 
+      }
+
+      // do a get request to our api (server.js) and inspect the response
+      const response = await request(server).post('/games').send(body);
+
+      expect(response.type).toEqual('application/json');
+    });
+
+  })
 })
