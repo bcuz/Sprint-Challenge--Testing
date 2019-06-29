@@ -35,4 +35,21 @@ server.post('/games', async (req, res) => {
   }
 })
 
+server.get('/games/:id', async (req, res) => {
+  try {
+    const game = await Games.findById(req.params.id);    
+
+    if (game) {
+      res.status(200).json(game);
+    } else {
+      res.status(404).json({ message: 'game not found' });
+    }
+  } catch (error) {
+    // log error to server
+    console.log(error);
+    res.status(500).json({
+      message: 'Error retrieving the game',
+    });
+  }
+});
 module.exports = server;

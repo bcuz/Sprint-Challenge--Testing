@@ -103,4 +103,53 @@ describe('server.js', () => {
     });
 
   })
+
+  describe('get /games/:id', () => {
+    afterEach( async () => {
+      await db('games').truncate();
+    });  
+
+    it('should return not found status code if game doesnt exist', async () => {
+      const expectedStatusCode = 404;
+
+      // do a get request to our api (server.js) and inspect the response
+      const response = await request(server).get('/games/1')
+
+      expect(response.status).toEqual(expectedStatusCode);
+
+    });  
+
+    it('should return a OK status code for game that exists', async () => {
+      const expectedStatusCode = 200;
+      let body = { 
+        "title": "Shovel Knight", 
+        "genre": "Action", 
+        "releaseYear": 2014 
+      }
+
+      // do a get request to our api (server.js) and inspect the response
+      await request(server).post('/games').send(body);
+      const response = await request(server).get('/games/1')
+
+      expect(response.status).toEqual(expectedStatusCode);
+
+    });
+    
+    it('should return the correct game', async () => {
+      let body = { 
+        "id": 1,
+        "title": "Shovel Knight", 
+        "genre": "Action", 
+        "releaseYear": 2014 
+      }
+
+      // do a get request to our api (server.js) and inspect the response
+      await request(server).post('/games').send(body);
+      const response = await request(server).get('/games/1')
+
+      expect(response.body).toEqual(body);
+
+    });
+
+  })
 })
